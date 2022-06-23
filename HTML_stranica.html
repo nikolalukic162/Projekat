@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+
+
+<header>
+
+
+
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewpport" content="width=device-width, initial-scale=1.0"/>
+ <link
+ rel="stylesheet"
+ href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+ />
+ 
+<title>Projekat-NYC</title>
+<style>
+      html, body {
+        height: 100%;
+        padding: 10px;
+        margin: 0;
+      }
+      #map {
+        /* configure the size of the map */
+        width: 100%;
+        height: 60%;
+      }
+
+body {
+  background-color: #3758FD;
+}
+    </style>
+
+</header>
+
+
+
+
+
+
+
+<body>
+
+<h1>HTML Stranica</h1>
+
+
+
+<picture>
+  <source     srcset="http://localhost:8000/geoserver/projekat/wms?service=WMS&version=1.1.0&request=GetMap&layers=projekat%3ADigitalni%20Elevacioni%20Model&bbox=5008175.0%2C2146475.0%2C5376500.0%2C2615750.0&width=602&height=768&srs=EPSG%3A3035&styles=&format=image%2Fpng">
+    <img src="http://localhost:8000/geoserver/projekat/wms?service=WMS&version=1.1.0&request=GetMap&layers=projekat%3ADigitalni%20Elevacioni%20Model&bbox=5008175.0%2C2146475.0%2C5376500.0%2C2615750.0&width=602&height=768&srs=EPSG%3A3035&styles=&format=image%2Fpng" alt="Flowers" style="width:300px;">
+   
+</picture>
+
+<div id="map"></div
+
+<form > 
+  
+
+<label for="fname">STATISTICS_APPROXIMATE:</label><br>
+  <input type="text" id="podatak1" name="fname" value=" "><br>
+  <label for="lname">STATISTICS_MAXIMUM:</label><br>
+  <input type="text" id="podatak0" name="lname" value=" "><br>
+  
+  
+  <label for="fname">STATISTICS_MEAN:</label><br>
+  <input type="text" id="podatak2" name="fname" value=" "><br>
+  
+  <label for="fname">STATISTICS_MINIMUM:</label><br>
+  <input type="text" id="podatak3" name="fname" value=" "><br>
+  
+  <label for="fname">STATISTICS_STDDEV:</label><br>
+  <input type="text" id="podatak4" name="fname" value=" "><br>
+  
+  <label for="fname">STATISTICS_VALID_PERCENT:</label><br>
+  <input type="text" id="podatak5" name="fname" value=" "><br>
+ 
+ 
+ 
+ 
+ 
+ 
+ <br><br>
+ 
+ <input type="submit" value="Submit"> <br>
+  
+
+
+</form>
+
+
+      
+
+
+
+ 
+
+ 
+
+
+
+</body>
+</html>
+
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script> 
+var map = L.map('map').setView({lon: -73.953094, lat:40.644468 }, 12);
+
+//add the OpenStreetMap tiles
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+}).addTo(map);
+
+var popup = L.popup();
+function onMapClick(e) {
+ popup
+ .setLatLng(e.latlng)
+ .setContent("Tvoja pozicija: " + e.latlng.toString())
+ .openOn(map);
+}
+map.on('click', onMapClick);
+//wms zahtev 
+        
+var wmsPostGisSLoj =L.tileLayer.wms('http://localhost:8080/geoserver/Projekat/wms?', {
+	layers: 'Projekat:nyc_upit',
+   transparent: true,
+     format: 'image/png' 
+});
+var wmsShpSloj =L.tileLayer.wms('http://localhost:8080/geoserver/Projekat/wms?', {
+	layers: '	Projekat:NYC_SHP_FILE',
+   transparent: true,
+     format: 'image/png' 
+});
+var wmsGiffSloj =L.tileLayer.wms('http://localhost:8080/geoserver/Projekat/wms?', {
+	layers: '	Projekat:NYC_GIFF_FILE',
+   transparent: true,
+     format: 'image/png' 
+});
+
+L.control.layers(null, {wmsPostGisSLoj}).addTo(map);
+L.control.layers(null, {wmsShpSloj}).addTo(map);
+L.control.layers(null, {wmsGiffSloj}).addTo(map);
+
+
+
+
+</script>
